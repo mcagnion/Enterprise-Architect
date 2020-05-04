@@ -81,7 +81,9 @@ sub OnDiagramScript()
 									case "BOX"			create_timeline(PlantUML(i))
 									case "END" 			resize_diagramObject(PlantUML(i))			'box or a partition
 									case "ACTIVATE" 	'Session.Output( "skip: " & PlantUML(i) )	'ignore
+									case "AUTONUMBER" 	'Session.Output( "skip: " & PlantUML(i) )	'ignore
 									case "DEACTIVATE" 	'Session.Output( "skip: " & PlantUML(i) )	'ignore
+									case "GROUP" 			create_fragment(PlantUML(i))				'add fragment
 									case "ALT" 			create_fragment(PlantUML(i))				'add fragment
 									case "OPT" 			create_fragment(PlantUML(i))				'add fragment
 									case "BREAK" 		create_fragment(PlantUML(i))				'add fragment
