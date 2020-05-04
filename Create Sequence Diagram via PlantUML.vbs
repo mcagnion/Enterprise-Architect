@@ -277,12 +277,35 @@ end sub
 
 sub create_sequence(script)
 dim word
+dim temp_split
 dim i
+dim j
+dim k
 dim element as EA.Element 
 dim connector as EA.Connector
 
 	call LOGTrace( "create sequence(" & script & ")")
+
+	' skip the empty strings caused by splitting consecutive spaces
+	temp_split=split(script)
+	' to have same type and size for word
 	word=split(script)
+	j = 0
+	k = 0
+	for i = 0 to ubound(temp_split)
+	  if temp_split(i) <> "" then
+	    ' only copy non-empties to word
+	    word(j) = temp_split(i)
+		j = j + 1
+	  else
+	    ' clean up starting from the end of word
+	    word(ubound(word)-k) = ""
+	    k = k + 1
+	  end if
+	next
+	for i = 0 to ubound(word)
+	  call LOGDebug("" & i & " : |" & word(i) & "|")
+	next
 	
 	'add to sequence array
 	'Session.Output( "word count(" & ubound(word)+1 & ")")
