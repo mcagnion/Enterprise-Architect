@@ -68,7 +68,8 @@ sub OnDiagramScript()
 					for i = 0 to Ubound(PlantUML)
 						call LOGDebug ( "Processing: " & PlantUML(i) )
 						if not PlantUML(i) = "" then
-							if not Asc(PlantUML(i)) = 39  then
+							' skip chars starting comments, markup and includes ...
+							if not (Asc(PlantUML(i)) = 39 or Asc(PlantUML(i)) = 64 or Asc(PlantUML(i)) = 33)  then
 								word=split(PlantUML(i))
 								select case ucase(word(0))
 									case "ACTOR"		create_timeline(PlantUML(i))
