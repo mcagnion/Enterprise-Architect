@@ -14,3 +14,4 @@ Mainly plantUML parsing needs adapting, since original author wrote for his pers
 
 1. log level can be set at the top of the Create ... script
 
+2. need to copy this to EA for testing ... how to automate?
