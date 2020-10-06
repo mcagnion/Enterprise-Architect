@@ -382,17 +382,22 @@ dim element as EA.Element
 dim diagramObjects as EA.Collection
 dim diagramObject as EA.DiagramObject
 dim diagramObjectName
-dim i
+dim i ' position of space character
 dim fragmentName
+dim fragmentType
 
 	'create element
 	i = instr(script, " ")
 	if i > 0 then
+		fragmentType = mid(script,1, i-1)
 		fragmentName = mid(script, i+1)
+	else
+		fragmentType = script
 	end if
+	
 	set elements = currentPackage.Elements
 	set element = elements.AddNew( fragmentName, "InteractionFragment" )
-	element.Subtype = fragment_type(mid(script,1, i-1))
+	element.Subtype = fragment_type(fragmentType)
 	element.Update
 	elements.Refresh
 	call LOGInfo( "added fragment: " & fragmentName & " (" & element.ElementID & ")" )
