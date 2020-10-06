@@ -66,12 +66,13 @@ sub OnDiagramScript()
 					fragment_level=0
 					PlantUML = Split(theSelectedElement.Notes,vbcrlf,-1,0)
 					for i = 0 to Ubound(PlantUML)
-						call LOGDebug ( "Processing: " & PlantUML(i) )
+						call LOGDebug ( "Processing #" & i & " :" & PlantUML(i) )
 						if not PlantUML(i) = "" then
 							' skip chars starting comments, markup and includes ...
 							if not (Asc(PlantUML(i)) = 39 or Asc(PlantUML(i)) = 64 or Asc(PlantUML(i)) = 33)  then
 								word=split(PlantUML(i))
 								select case ucase(word(0))
+									' Timelines
 									case "ACTOR"		create_timeline(PlantUML(i))
 									case "PARTICIPANT"	create_timeline(PlantUML(i))
 									case "BOUNDARY"		create_timeline(PlantUML(i))
@@ -81,9 +82,16 @@ sub OnDiagramScript()
 									case "DATABASE"		create_timeline(PlantUML(i))
 									case "BOX"			create_timeline(PlantUML(i))
 									case "END" 			resize_diagramObject(PlantUML(i))			'box or a partition
-									case "ACTIVATE" 	'Session.Output( "skip: " & PlantUML(i) )	'ignore
-									case "AUTONUMBER" 	'Session.Output( "skip: " & PlantUML(i) )	'ignore
-									case "DEACTIVATE" 	'Session.Output( "skip: " & PlantUML(i) )	'ignore
+									' Ignored
+									case "NOTE" 		call LOGDebug ( "skip: " & word(0) )		'ignore
+									case "AUTONUMBER" 	call LOGDebug ( "skip: " & word(0) )		'ignore
+									case "ACTIVATE" 	call LOGDebug ( "skip: " & word(0) )		'ignore
+									case "DEACTIVATE" 	call LOGDebug ( "skip: " & word(0) )		'ignore
+									case "CREATE" 		call LOGDebug ( "skip: " & word(0) )		'ignore
+									case "DESTROY" 		call LOGDebug ( "skip: " & word(0) )		'ignore
+									case "..."			call LOGDebug ( "skip: " & word(0) )		'ignore
+									case "=="			call LOGDebug ( "skip: " & word(0) )		'ignore
+									' Fragments
 									case "GROUP" 			create_fragment(PlantUML(i))				'add fragment
 									case "ALT" 			create_fragment(PlantUML(i))				'add fragment
 									case "OPT" 			create_fragment(PlantUML(i))				'add fragment
@@ -91,6 +99,7 @@ sub OnDiagramScript()
 									case "LOOP" 		create_fragment(PlantUML(i))				'add fragment
 									case "CRITICAL" 	create_fragment(PlantUML(i))			 	'add fragment
 									case "ELSE" 		add_partition(PlantUML(i) ) 				'add partition to fragment
+									' Sequence
 									case else			create_sequence(PlantUML(i))				'replace with a regex expression to make sure sctipt line si indeed a sequence
 								end select
 							end if
